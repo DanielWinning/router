@@ -1,0 +1,8 @@
+{
+    "name": "dannyxcii/router",
+    "autoload":{
+        "psr-4": {
+            "DannyXCII\\Router\\": "src/"
+        }
+    }
+}
