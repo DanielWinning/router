@@ -1,2 +1,5 @@
 /.idea
+/.fleet
 /vendor
+/public
+/.phpunit.result.cache

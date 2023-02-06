@@ -2,41 +2,56 @@
 
 namespace DannyXCII\Router;
 
-use DannyXCII\Router\Exceptions\RouteNotFoundException;
-
 class Router
 {
-    private array $routes;
+    private array $routes = [
+        'GET' => [],
+        'POST' => []
+    ];
 
     /**
      * @param string $route
-     * @param callable $action
+     * @param array|\Closure $controller
      *
-     * @return $this
+     * @return void
+     *
+     * @throws \InvalidArgumentException
      */
-    public function register(string $route, callable $action): self
+    public function get(string $route, array|\Closure $controller): void
     {
-        $this->routes[$route] = $action;
+        if (is_array($controller) && count($controller) !== 2) {
+            throw new \InvalidArgumentException(
+                'Array should contain two values: controller name and method name'
+            );
+        }
 
-        return $this;
+        $this->routes['GET'][$route] = $controller;
     }
 
     /**
-     * @param string $requestUri
+     * @param string $route
+     * @param array|\Closure $controller
      *
-     * @return mixed
+     * @return void
      *
-     * @throws RouteNotFoundException
+     * @throws \InvalidArgumentException
      */
-    public function resolve(string $requestUri): mixed
+    public function post(string $route, array|\Closure $controller): void
     {
-        $route = explode('?', $requestUri)[0];
-        $action = $this->routes[$route] ?? null;
-
-        if (!$action) {
-            throw new RouteNotFoundException();
+        if (is_array($controller) && count($controller) !== 2) {
+            throw new \InvalidArgumentException(
+                'Array should contain two values: controller name and method name'
+            );
         }
 
-        return call_user_func($action);
+        $this->routes['POST'][$route] = $controller;
+    }
+
+    /**
+     * @return array|array[]
+     */
+    public function getRoutes(): array
+    {
+        return $this->routes;
     }
 }
