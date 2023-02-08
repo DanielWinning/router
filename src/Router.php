@@ -10,41 +10,23 @@ class Router
     ];
 
     /**
-     * @param string $route
-     * @param array|\Closure $controller
+     * @param Route $route
      *
      * @return void
-     *
-     * @throws \InvalidArgumentException
      */
-    public function get(string $route, array|\Closure $controller): void
+    public function get(Route $route): void
     {
-        if (is_array($controller) && count($controller) !== 2) {
-            throw new \InvalidArgumentException(
-                'Array should contain two values: controller name and method name'
-            );
-        }
-
-        $this->routes['GET'][$route] = $controller;
+        $this->routes['GET'][$route->getPath()] = $route;
     }
 
     /**
-     * @param string $route
-     * @param array|\Closure $controller
+     * @param Route $route
      *
      * @return void
-     *
-     * @throws \InvalidArgumentException
      */
-    public function post(string $route, array|\Closure $controller): void
+    public function post(Route $route): void
     {
-        if (is_array($controller) && count($controller) !== 2) {
-            throw new \InvalidArgumentException(
-                'Array should contain two values: controller name and method name'
-            );
-        }
-
-        $this->routes['POST'][$route] = $controller;
+        $this->routes['POST'][$route->getPath()] = $route;
     }
 
     /**

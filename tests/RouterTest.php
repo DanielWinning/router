@@ -2,9 +2,12 @@
 
 namespace Tests;
 
+use DannyXCII\Router\Route;
 use DannyXCII\Router\Router;
+use PHPUnit\Framework\Attributes\DataProviderExternal;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
+use Tests\DataProvider\RouterDataProvider;
 
 class RouterTest extends TestCase
 {
@@ -17,92 +20,24 @@ class RouterTest extends TestCase
     }
 
     #[Test]
-    public function itRegistersGetRouteFromArray()
+    public function itHasNoRoutesWhenFirstInstantiated()
     {
-        $this->router->get('/users', ['UserController', 'index']);
+        $this->assertEquals(['GET' => [], 'POST' => []], $this->router->getRoutes());
+    }
 
-        $expected = [
-            'GET' => [
-                '/users' => [
-                    'UserController',
-                    'index'
-                ],
-            ],
-            'POST' => []
-        ];
-
+    #[Test]
+    #[DataProviderExternal(RouterDataProvider::class, 'registersGetRouteData')]
+    public function itRegistersGetRoute(Route $route, array $expected)
+    {
+        $this->router->get($route);
         $this->assertEquals($expected, $this->router->getRoutes());
     }
 
     #[Test]
-    public function itRegistersGetRouteFromClosure()
+    #[DataProviderExternal(RouterDataProvider::class, 'registersPostRouteData')]
+    public function itRegistersPostRoute(Route $route, array $expected)
     {
-        $this->router->get('/hello', function () {
-            echo 'Hello, world!';
-        });
-
-        $expected = [
-            'GET' => [
-                '/hello' => function () {
-                    echo 'Hello, world!';
-                },
-            ],
-            'POST' => []
-        ];
-
+        $this->router->post($route);
         $this->assertEquals($expected, $this->router->getRoutes());
-    }
-
-    #[Test]
-    public function itThrowsInvalidArgumentExceptionWhenInvalidControllerArrayPassedToGetMethod()
-    {
-        $this->expectException(\InvalidArgumentException::class);
-
-        $this->router->get('/invalid-array', ['UserController', 'index', 'getIndex']);
-    }
-
-    #[Test]
-    public function itRegistersPostRouteFromArray()
-    {
-        $this->router->post('/users/{id}/update', ['UserController', 'updateUser']);
-
-        $expected = [
-            'GET' => [],
-            'POST' => [
-                '/users/{id}/update' => [
-                    'UserController',
-                    'updateUser'
-                ]
-            ]
-        ];
-
-        $this->assertEquals($expected, $this->router->getRoutes());
-    }
-
-    #[Test]
-    public function itRegistersPostRouteFromClosure()
-    {
-        $this->router->post('/post-closure', function () {
-           return 'Hello, world!';
-        });
-
-        $expected = [
-            'GET' => [],
-            'POST' => [
-                '/post-closure' => function () {
-                    return 'Hello, world!';
-                }
-            ]
-        ];
-
-        $this->assertEquals($expected, $this->router->getRoutes());
-    }
-
-    #[Test]
-    public function itThrowsInvalidArgumentExceptionWhenInvalidControllerArrayPassedToPostMethod()
-    {
-        $this->expectException(\InvalidArgumentException::class);
-
-        $this->router->post('/posts', ['PostController', 'index', 'showPosts']);
     }
 }
