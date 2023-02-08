@@ -81,6 +81,10 @@ class Route
      */
     private function pathIsValid(string $path): bool
     {
+        if (preg_match('/[?!\[\]@\'"£$%^&*()+=`#~]/', $path) || str_contains($path, '\\') || str_contains($path, '//')) {
+            return false;
+        }
+
         if (str_contains($path, '{') || str_contains($path, '}')) {
             if (substr_count($path, '{') !== substr_count($path, '}')) {
                 return false;

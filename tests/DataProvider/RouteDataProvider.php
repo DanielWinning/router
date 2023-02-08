@@ -27,7 +27,9 @@ class RouteDataProvider
     {
         $cases = [
             ['/hello{/world'],
-            ['/users/{id/1}']
+            ['/users/{id/1}'],
+            ['/users/?!/'],
+            ['//users//']
         ];
 
         foreach ($cases as $case) {
