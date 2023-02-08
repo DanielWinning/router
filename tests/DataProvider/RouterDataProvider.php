@@ -2,10 +2,16 @@
 
 namespace Tests\DataProvider;
 
+use DannyXCII\Router\Exceptions\InvalidRoutePathException;
 use DannyXCII\Router\Route;
 
 class RouterDataProvider
 {
+    /**
+     * @return \Generator
+     *
+     * @throws InvalidRoutePathException
+     */
     public static function registersGetRouteData(): \Generator
     {
         $cases = [
@@ -36,6 +42,11 @@ class RouterDataProvider
         }
     }
 
+    /**
+     * @return \Generator
+     *
+     * @throws InvalidRoutePathException
+     */
     public static function registersPostRouteData(): \Generator
     {
         $cases = [

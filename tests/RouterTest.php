@@ -19,23 +19,38 @@ class RouterTest extends TestCase
         $this->router = new Router();
     }
 
+    /**
+     * @return void
+     */
     #[Test]
-    public function itHasNoRoutesWhenFirstInstantiated()
+    public function itHasNoRoutesWhenFirstInstantiated(): void
     {
         $this->assertEquals(['GET' => [], 'POST' => []], $this->router->getRoutes());
     }
 
+    /**
+     * @param Route $route
+     * @param array $expected
+     *
+     * @return void
+     */
     #[Test]
     #[DataProviderExternal(RouterDataProvider::class, 'registersGetRouteData')]
-    public function itRegistersGetRoute(Route $route, array $expected)
+    public function itRegistersGetRoute(Route $route, array $expected): void
     {
         $this->router->get($route);
         $this->assertEquals($expected, $this->router->getRoutes());
     }
 
+    /**
+     * @param Route $route
+     * @param array $expected
+     *
+     * @return void
+     */
     #[Test]
     #[DataProviderExternal(RouterDataProvider::class, 'registersPostRouteData')]
-    public function itRegistersPostRoute(Route $route, array $expected)
+    public function itRegistersPostRoute(Route $route, array $expected): void
     {
         $this->router->post($route);
         $this->assertEquals($expected, $this->router->getRoutes());
