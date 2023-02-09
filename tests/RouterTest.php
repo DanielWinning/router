@@ -2,6 +2,7 @@
 
 namespace Tests;
 
+use DannyXCII\Router\Exceptions\InvalidRequestMethodException;
 use DannyXCII\Router\Route;
 use DannyXCII\Router\Router;
 use PHPUnit\Framework\Attributes\DataProviderExternal;
@@ -54,5 +55,35 @@ class RouterTest extends TestCase
     {
         $this->router->post($route);
         $this->assertEquals($expected, $this->router->getRoutes());
+    }
+
+    /**
+     * @param string $requestMethod
+     *
+     * @return void
+     *
+     * @throws InvalidRequestMethodException
+     */
+    #[Test]
+    #[DataProviderExternal(RouterDataProvider::class, 'validRequestMethodProvider')]
+    public function itResolvesValidRequestMethod(string $requestMethod): void
+    {
+        $this->router->resolve('/', $requestMethod);
+        $this->expectNotToPerformAssertions();
+    }
+
+    /**
+     * @param string $requestMethod
+     *
+     * @return void
+     *
+     * @throws InvalidRequestMethodException
+     */
+    #[Test]
+    #[DataProviderExternal(RouterDataProvider::class, 'invalidRequestMethodProvider')]
+    public function itThrowsExceptionResolvingInvalidRequestMethod(string $requestMethod): void
+    {
+        $this->expectException(InvalidRequestMethodException::class);
+        $this->router->resolve('/', $requestMethod);
     }
 }

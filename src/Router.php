@@ -2,6 +2,8 @@
 
 namespace DannyXCII\Router;
 
+use DannyXCII\Router\Exceptions\InvalidRequestMethodException;
+
 class Router
 {
     private array $routes = [
@@ -37,8 +39,28 @@ class Router
         return $this->routes;
     }
 
+    /**
+     * @param string $requestUri
+     * @param string $requestMethod
+     *
+     * @return void
+     *
+     * @throws InvalidRequestMethodException
+     */
     public function resolve(string $requestUri, string $requestMethod)
     {
+        if (!$this->requestMethodIsValid($requestMethod)) {
+            throw new InvalidRequestMethodException();
+        }
+    }
 
+    /**
+     * @param string $requestMethod
+     *
+     * @return bool
+     */
+    private function requestMethodIsValid(string $requestMethod): bool
+    {
+        return array_key_exists(strtoupper($requestMethod), $this->getRoutes());
     }
 }

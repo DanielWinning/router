@@ -76,4 +76,38 @@ class RouterDataProvider
             yield $name => $case;
         }
     }
+
+    /**
+     * @return \Generator
+     */
+    public static function validRequestMethodProvider(): \Generator
+    {
+        $cases = [
+            'GET' => ['GET'],
+            'POST' => ['POST'],
+            'Get' => ['Get'],
+            'post' => ['post']
+        ];
+
+        foreach ($cases as $name => $case) {
+            yield $name => $case;
+        }
+    }
+
+    /**
+     * @return \Generator
+     */
+    public static function invalidRequestMethodProvider(): \Generator
+    {
+        $cases = [
+            'PUT' => ['PUT'],
+            'PUSH' => ['PUSH'],
+            'posting' => ['posting'],
+            'got' => ['got']
+        ];
+
+        foreach ($cases as $name => $case) {
+            yield $name => $case;
+        }
+    }
 }
