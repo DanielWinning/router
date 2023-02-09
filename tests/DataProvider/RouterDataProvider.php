@@ -12,7 +12,7 @@ class RouterDataProvider
      *
      * @throws InvalidRoutePathException
      */
-    public static function registersGetRouteData(): \Generator
+    public static function getRouteProvider(): \Generator
     {
         $cases = [
             'route from closure' => [
@@ -47,7 +47,7 @@ class RouterDataProvider
      *
      * @throws InvalidRoutePathException
      */
-    public static function registersPostRouteData(): \Generator
+    public static function postRouteProvider(): \Generator
     {
         $cases = [
             'route from closure' => [

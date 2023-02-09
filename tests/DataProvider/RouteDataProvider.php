@@ -36,4 +36,37 @@ class RouteDataProvider
             yield $case;
         }
     }
+
+    /**
+     * @return \Generator
+     */
+    public static function dynamicPathProvider(): \Generator
+    {
+        $cases = [
+            ['/users/{id}'],
+            ['/users/{id}/edit'],
+            ['/posts/{category}/{post}']
+        ];
+
+        foreach ($cases as $case) {
+            yield $case;
+        }
+    }
+
+    /**
+     * @return \Generator
+     */
+    public static function notDynamicPathProvider(): \Generator
+    {
+        $cases = [
+            ['/'],
+            ['/users'],
+            ['/posts/all'],
+            ['/contact-us/']
+        ];
+
+        foreach ($cases as $case) {
+            yield $case;
+        }
+    }
 }

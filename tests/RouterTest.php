@@ -35,7 +35,7 @@ class RouterTest extends TestCase
      * @return void
      */
     #[Test]
-    #[DataProviderExternal(RouterDataProvider::class, 'registersGetRouteData')]
+    #[DataProviderExternal(RouterDataProvider::class, 'getRouteProvider')]
     public function itRegistersGetRoute(Route $route, array $expected): void
     {
         $this->router->get($route);
@@ -49,7 +49,7 @@ class RouterTest extends TestCase
      * @return void
      */
     #[Test]
-    #[DataProviderExternal(RouterDataProvider::class, 'registersPostRouteData')]
+    #[DataProviderExternal(RouterDataProvider::class, 'postRouteProvider')]
     public function itRegistersPostRoute(Route $route, array $expected): void
     {
         $this->router->post($route);

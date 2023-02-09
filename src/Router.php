@@ -36,4 +36,9 @@ class Router
     {
         return $this->routes;
     }
+
+    public function resolve(string $requestUri, string $requestMethod)
+    {
+
+    }
 }

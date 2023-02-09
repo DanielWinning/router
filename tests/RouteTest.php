@@ -35,26 +35,32 @@ class RouteTest extends TestCase
     }
 
     /**
+     * @param string $path
+     *
      * @return void
      *
      * @throws InvalidRoutePathException
      */
     #[Test]
-    public function itIsDynamicWhenRouteIncludesBraces(): void
+    #[DataProviderExternal(RouteDataProvider::class, 'dynamicPathProvider')]
+    public function itIsDynamic(string $path): void
     {
-        $route = new Route('/user/{id}', ['UserController', 'showUser']);
+        $route = new Route($path, ['UserController', 'showUser']);
         $this->assertTrue($route->isDynamic());
     }
 
     /**
+     * @param string $path
+     *
      * @return void
      *
      * @throws InvalidRoutePathException
      */
     #[Test]
-    public function itIsNotDynamicWhenRouteDoesNotIncludeBraces(): void
+    #[DataProviderExternal(RouteDataProvider::class, 'notDynamicPathProvider')]
+    public function itIsNotDynamic(string $path): void
     {
-        $route = new Route('/users', ['UserController', 'index']);
+        $route = new Route($path, ['UserController', 'index']);
         $this->assertFalse($route->isDynamic());
     }
 }
