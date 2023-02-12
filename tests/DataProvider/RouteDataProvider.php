@@ -112,6 +112,10 @@ class RouteDataProvider
             'users/{id} matches' => [
                 ['/users/{id}', '/users/1'],
                 true
+            ],
+            'api/v1/users/{method}/{user} matches' => [
+                ['/api/v1/users/{method}/{user}', 'api/v1/users/view/1'],
+                true
             ]
         ];
 
