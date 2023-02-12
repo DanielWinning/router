@@ -1,16 +1,20 @@
 <?php
 
-namespace Tests;
+namespace tests\Tests;
 
+use DannyXCII\Router\Exceptions\ControllerClassNotFoundException;
 use DannyXCII\Router\Exceptions\InvalidRequestMethodException;
+use DannyXCII\Router\Exceptions\InvalidRoutePathException;
 use DannyXCII\Router\Route;
 use DannyXCII\Router\Router;
 use PHPUnit\Framework\Attributes\DataProviderExternal;
 use PHPUnit\Framework\Attributes\Test;
-use PHPUnit\Framework\TestCase;
+use Tests\BaseTest;
+use Tests\Controller\TestController;
+use Tests\DataProvider\RouteDataProvider;
 use Tests\DataProvider\RouterDataProvider;
 
-class RouterTest extends TestCase
+class RouterTest extends BaseTest
 {
     private Router $router;
 
@@ -85,5 +89,21 @@ class RouterTest extends TestCase
     {
         $this->expectException(InvalidRequestMethodException::class);
         $this->router->resolve('/', $requestMethod);
+    }
+
+    /**
+     * @param string $path
+     *
+     * @return void
+     *
+     * @throws ControllerClassNotFoundException|InvalidRequestMethodException|InvalidRoutePathException
+     */
+    #[Test]
+    #[DataProviderExternal(RouteDataProvider::class, 'simplePathProvider')]
+    public function itResolvesSimpleRoute(string $path): void
+    {
+        $this->router->get(new Route($path, [TestController::class, 'index']));
+        $this->router->resolve($path, 'GET');
+        $this->expectNotToPerformAssertions();
     }
 }

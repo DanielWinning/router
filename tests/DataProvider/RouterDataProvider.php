@@ -2,15 +2,17 @@
 
 namespace Tests\DataProvider;
 
+use DannyXCII\Router\Exceptions\ControllerClassNotFoundException;
 use DannyXCII\Router\Exceptions\InvalidRoutePathException;
 use DannyXCII\Router\Route;
+use Tests\Controller\TestController;
 
 class RouterDataProvider
 {
     /**
      * @return \Generator
      *
-     * @throws InvalidRoutePathException
+     * @throws InvalidRoutePathException|ControllerClassNotFoundException
      */
     public static function getRouteProvider(): \Generator
     {
@@ -22,7 +24,7 @@ class RouterDataProvider
                 ['GET' => [$route->getPath() => $route], 'POST' => []]
             ],
             'route from class/method array' => [
-                $route = new Route('/', ['UserController', 'index']),
+                $route = new Route('/', [TestController::class, 'index']),
                 ['GET' => [$route->getPath() => $route], 'POST' => []]
             ],
             'dynamic route from closure' => [
@@ -32,7 +34,7 @@ class RouterDataProvider
                 ['GET' => [$route->getPath() => $route], 'POST' => []]
             ],
             'dynamic route from class/method array' => [
-                $route = new Route('/users/{id}/edit', ['UserController', 'edit']),
+                $route = new Route('/users/{id}/edit', [TestController::class, 'index']),
                 ['GET' => [$route->getPath() => $route], 'POST' => []]
             ]
         ];
@@ -45,7 +47,7 @@ class RouterDataProvider
     /**
      * @return \Generator
      *
-     * @throws InvalidRoutePathException
+     * @throws InvalidRoutePathException|ControllerClassNotFoundException
      */
     public static function postRouteProvider(): \Generator
     {
@@ -57,7 +59,7 @@ class RouterDataProvider
                 ['GET' => [], 'POST' => [$route->getPath() => $route]]
             ],
             'route from class/method array' => [
-                $route = new Route('/users/add', ['UserController', 'store']),
+                $route = new Route('/users/add', [TestController::class, 'index']),
                 ['GET' => [], 'POST' => [$route->getPath() => $route]]
             ],
             'dynamic route from closure' => [
@@ -67,7 +69,7 @@ class RouterDataProvider
                 ['GET' => [], 'POST' => [$route->getPath() => $route]]
             ],
             'dynamic route from class/method array' => [
-                $route = new Route('/users/{id}/edit', ['UserController', 'edit']),
+                $route = new Route('/users/{id}/edit', [TestController::class, 'index']),
                 ['GET' => [], 'POST' => [$route->getPath() => $route]]
             ]
         ];

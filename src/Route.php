@@ -2,6 +2,7 @@
 
 namespace DannyXCII\Router;
 
+use DannyXCII\Router\Exceptions\ControllerClassNotFoundException;
 use DannyXCII\Router\Exceptions\InvalidRoutePathException;
 
 class Route
@@ -10,7 +11,7 @@ class Route
     private array|\Closure $controller;
 
     /**
-     * @throws InvalidRoutePathException
+     * @throws InvalidRoutePathException|ControllerClassNotFoundException
      */
     public function __construct(string $path, array|\Closure $controller)
     {
@@ -31,7 +32,7 @@ class Route
             throw new InvalidRoutePathException();
         }
 
-        $this->path = $path;
+        $this->path = trim($path, '/');
     }
 
     /**
@@ -47,12 +48,16 @@ class Route
      *
      * @return void
      *
-     * @throws \InvalidArgumentException
+     * @throws \InvalidArgumentException|ControllerClassNotFoundException
      */
     private function setController(array|\Closure $controller): void
     {
         if (!$this->controllerIsValid($controller)) {
             throw new \InvalidArgumentException();
+        }
+
+        if (is_array($controller) && !class_exists($controller[0])) {
+            throw new ControllerClassNotFoundException();
         }
 
         $this->controller = $controller;
@@ -118,5 +123,21 @@ class Route
         }
 
         return true;
+    }
+
+    /**
+     * @return array
+     */
+    private function splitPath(): array
+    {
+        return explode('/', $this->getPath());
+    }
+
+    /**
+     * @return int
+     */
+    private function getLength(): int
+    {
+        return count($this->splitPath());
     }
 }

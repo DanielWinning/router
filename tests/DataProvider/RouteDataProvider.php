@@ -56,13 +56,46 @@ class RouteDataProvider
     /**
      * @return \Generator
      */
-    public static function notDynamicPathProvider(): \Generator
+    public static function simplePathProvider(): \Generator
     {
         $cases = [
             '/' => ['/'],
             '/users' => ['/users'],
             '/posts/all' => ['/posts/all'],
             '/contact-us' => ['/contact-us/']
+        ];
+
+        foreach ($cases as $name => $case) {
+            yield $name => $case;
+        }
+    }
+
+    /**
+     * @return \Generator
+     */
+    public static function pathToSplitProvider(): \Generator
+    {
+        $cases = [
+            '/' => ['/', ['']],
+            '/api/users/all' => ['/api/users/all', ['api', 'users', 'all']],
+            '/users/{id}/edit' => ['/users/{id}/edit', ['users', '{id}', 'edit']]
+        ];
+
+        foreach ($cases as $name => $case) {
+            yield $name => $case;
+        }
+    }
+
+    /**
+     * @return \Generator
+     */
+    public static function routeLengthProvider(): \Generator
+    {
+        $cases = [
+            '/' => ['/', 1],
+            '/api/users/all' => ['/api/users/all', 3],
+            'users/{id}/edit' => ['users/{id}/edit', 3],
+            '/admin/posts/{id}/contact-info/update' => ['/admin/posts/{id}/contact-info/update', 5]
         ];
 
         foreach ($cases as $name => $case) {
