@@ -124,7 +124,10 @@ class RouteDataProvider
         }
     }
 
-    public static function queryStringPathProvider()
+    /**
+     * @return \Generator
+     */
+    public static function queryStringPathProvider(): \Generator
     {
         $cases = [
             '/users/all?role=user&confirmed=1' => [
