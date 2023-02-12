@@ -106,4 +106,19 @@ class RouterTest extends BaseTest
         $this->router->resolve($path, 'GET');
         $this->expectNotToPerformAssertions();
     }
+
+    /**
+     * @return void
+     *
+     * @throws ControllerClassNotFoundException|InvalidRequestMethodException|InvalidRoutePathException
+     */
+    #[Test]
+    public function itResolvesRouteWithArguments(): void
+    {
+        $this->router->get(new Route('/users/{id}', function (string $userId) {
+            echo 'User: ' . $userId;
+        }));
+        $this->router->resolve('/users/12', 'GET');
+        $this->expectNotToPerformAssertions();
+    }
 }

@@ -63,7 +63,15 @@ class Router
             foreach ($this->getRoutes()[strtoupper($requestMethod)] as $route) {
                 /** @var Route $route **/
                 if ($route->isDynamic() && $route->compare($uri)) {
-                    $route->resolve();
+                    $arguments = [];
+
+                    foreach ($route->splitPath() as $index => $routeElement) {
+                        if (str_contains($routeElement, '{')) {
+                            $arguments[] = explode('/', $uri)[$index];
+                        }
+                    }
+
+                    $route->resolve($arguments);
                     $routeFound = true;
                     break;
                 }

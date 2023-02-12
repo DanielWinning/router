@@ -126,15 +126,26 @@ class Route
     }
 
     /**
+     * @param ?array $arguments
+     *
      * @return void
      */
-    public function resolve(): void
+    public function resolve(?array $arguments = null): void
     {
         if (is_array($this->getController())) {
             $class = new ($this->getController()[0]);
-            $class->{$this->getController()[1]}();
+
+            if (!is_null($arguments)) {
+                $class->{$this->getController()[1]}(...$arguments);
+            } else {
+                $class->{$this->getController()[1]}();
+            }
         } else {
-            ($this->getController())();
+            if (!is_null($arguments)) {
+                ($this->getController())(...$arguments);
+            } else {
+                ($this->getController())();
+            }
         }
     }
 
