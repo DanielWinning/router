@@ -102,4 +102,21 @@ class RouteDataProvider
             yield $name => $case;
         }
     }
+
+    /**
+     * @return \Generator
+     */
+    public static function dynamicRouteMatchProvider(): \Generator
+    {
+        $cases = [
+            'users/{id} matches' => [
+                ['/users/{id}', '/users/1'],
+                true
+            ]
+        ];
+
+        foreach ($cases as $name => $case) {
+            yield $name => $case;
+        }
+    }
 }

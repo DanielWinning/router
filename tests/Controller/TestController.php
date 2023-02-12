@@ -4,13 +4,13 @@ namespace Tests\Controller;
 
 class TestController
 {
-    public function index(): string
+    public function index(): void
     {
-        return 'Index page';
+        echo 'Index page';
     }
 
-    public function about(): string
+    public function about(): void
     {
-        return 'About page';
+        echo 'About page';
     }
 }

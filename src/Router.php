@@ -47,10 +47,35 @@ class Router
      *
      * @throws InvalidRequestMethodException
      */
-    public function resolve(string $requestUri, string $requestMethod)
+    public function resolve(string $requestUri, string $requestMethod): void
     {
         if (!$this->requestMethodIsValid($requestMethod)) {
             throw new InvalidRequestMethodException();
+        }
+
+        $uri = trim($requestUri, '/');
+        $routeFound = false;
+
+        if (array_key_exists($uri, $this->getRoutes()[strtoupper($requestMethod)])) {
+            $this->getRoutes()[$requestMethod][$uri]->resolve();
+            $routeFound = true;
+        } else {
+            foreach ($this->getRoutes()[strtoupper($requestMethod)] as $route) {
+                /** @var Route $route **/
+                if ($route->isDynamic() && $route->compare($uri)) {
+                    $route->resolve();
+                    $routeFound = true;
+                    break;
+                }
+            }
+        }
+
+        if (!$routeFound) {
+            if (array_key_exists('404', $this->getRoutes()['GET'])) {
+                $this->getRoutes()['GET']['404']->resolve();
+            } else {
+                echo 'Error 404: Page Not Found';
+            }
         }
     }
 

@@ -91,15 +91,14 @@ class RouteTest extends BaseTest
      *
      * @return void
      *
-     * @throws ControllerClassNotFoundException|InvalidRoutePathException|\ReflectionException
+     * @throws ControllerClassNotFoundException|InvalidRoutePathException
      */
     #[Test]
     #[DataProviderExternal(RouteDataProvider::class, 'pathToSplitProvider')]
     public function itCanSplitPathIntoParts(string $path, array $expected): void
     {
         $route = new Route($path, [TestController::class, 'index']);
-        $method = $this->getPrivateMethod($route, 'splitPath');
-        $this->assertEquals($expected, $method->invoke($route));
+        $this->assertEquals($expected, $route->splitPath());
     }
 
     /**
@@ -117,5 +116,21 @@ class RouteTest extends BaseTest
         $route = new Route($path, [TestController::class, 'index']);
         $method = $this->getPrivateMethod($route, 'getLength');
         $this->assertEquals($expected, $method->invoke($route));
+    }
+
+    /**
+     * @param array $path
+     * @param bool $expected
+     *
+     * @return void
+     *
+     * @throws ControllerClassNotFoundException|InvalidRoutePathException
+     */
+    #[Test]
+    #[DataProviderExternal(RouteDataProvider::class, 'dynamicRouteMatchProvider')]
+    public function itMatchesDynamicRoutes(array $path, bool $expected): void
+    {
+        $route = new Route($path[0], [TestController::class, 'index']);
+        $this->assertEquals($expected, $route->compare($path[1]), $route->getPath() . ' ' . $path[1]);
     }
 }

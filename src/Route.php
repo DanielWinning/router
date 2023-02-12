@@ -126,9 +126,22 @@ class Route
     }
 
     /**
+     * @return void
+     */
+    public function resolve(): void
+    {
+        if (is_array($this->getController())) {
+            $class = new ($this->getController()[0]);
+            $class->{$this->getController()[1]}();
+        } else {
+            ($this->getController())();
+        }
+    }
+
+    /**
      * @return array
      */
-    private function splitPath(): array
+    public function splitPath(): array
     {
         return explode('/', $this->getPath());
     }
@@ -139,5 +152,27 @@ class Route
     private function getLength(): int
     {
         return count($this->splitPath());
+    }
+
+    /**
+     * @param string $requestUri
+     *
+     * @return bool
+     */
+    public function compare(string $requestUri): bool
+    {
+        $explodedRequestUri = explode('/', trim($requestUri, '/'));
+
+        if (count($explodedRequestUri) !== $this->getLength()) {
+            return false;
+        }
+
+        foreach ($this->splitPath() as $index => $pathElement) {
+            if (!str_contains($pathElement, '{') && ($pathElement !== $explodedRequestUri[$index])) {
+                return false;
+            }
+        }
+
+        return true;
     }
 }
