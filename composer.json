@@ -1,6 +1,7 @@
 {
     "name": "dannyxcii/router",
     "version": "0.1.0",
+    "license": "MIT",
     "autoload":{
         "psr-4": {
             "DannyXCII\\Router\\": "src/"
