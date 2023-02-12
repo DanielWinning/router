@@ -1,6 +1,6 @@
 <?php
 
-namespace tests\Tests;
+namespace Tests\Test;
 
 use DannyXCII\Router\Exceptions\ControllerClassNotFoundException;
 use DannyXCII\Router\Exceptions\InvalidRequestMethodException;
@@ -120,5 +120,24 @@ class RouterTest extends BaseTest
         }));
         $this->router->resolve('/users/12', 'GET');
         $this->expectNotToPerformAssertions();
+    }
+
+    /**
+     * @param string $path
+     * @param string $expected
+     *
+     * @return void
+     *
+     * @throws ControllerClassNotFoundException|InvalidRequestMethodException|InvalidRoutePathException
+     */
+    #[Test]
+    #[DataProviderExternal(RouteDataProvider::class, 'queryStringPathProvider')]
+    public function itExcludesQueryStringFromPath(string $path, string $expected): void
+    {
+        $this->router->get(new Route(explode('?', $path)[0], function () {
+            echo 'Index';
+        }));
+        $this->expectOutputString('Index');
+        $this->router->resolve($path, 'GET');
     }
 }

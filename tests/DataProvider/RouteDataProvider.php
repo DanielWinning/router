@@ -123,4 +123,18 @@ class RouteDataProvider
             yield $name => $case;
         }
     }
+
+    public static function queryStringPathProvider()
+    {
+        $cases = [
+            '/users/all?role=user&confirmed=1' => [
+                '/users/all?role=user&confirmed=1',
+                '/users/all'
+            ]
+        ];
+
+        foreach ($cases as $name => $case) {
+            yield $name => $case;
+        }
+    }
 }

@@ -1,6 +1,6 @@
 <?php
 
-namespace tests\Tests;
+namespace Tests\Test;
 
 use DannyXCII\Router\Exceptions\ControllerClassNotFoundException;
 use DannyXCII\Router\Exceptions\InvalidRoutePathException;

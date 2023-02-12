@@ -53,7 +53,7 @@ class Router
             throw new InvalidRequestMethodException();
         }
 
-        $uri = trim($requestUri, '/');
+        $uri = trim(explode('?', $requestUri)[0], '/');
         $routeFound = false;
 
         if (array_key_exists($uri, $this->getRoutes()[strtoupper($requestMethod)])) {
